@@ -4,6 +4,9 @@ import knex from 'knex';
 import bcrypt from 'bcrypt';
 import signin from './controllers/signin.js';
 import register from './controllers/register.js';
+import addtofav from './controllers/addto.js';
+import deletefavourite from './controllers/deletefav.js';
+import viewfavourites from './controllers/favourites.js';
 
 
 
@@ -26,12 +29,15 @@ const db = knex({
 
 app.get('/', (req, res) => {
     db.select().table('users')
-    .then(res.json("Db connected"))
+    .then(res.json("DB Connected"))
 });
+
 
 app.post('/register',(req,res)=>{register(req,res,db,bcrypt,saltRounds)});
 app.post('/signin', (req,res)=>{signin(req,res,db,bcrypt)});//DONE 
-
+app.post('/addto',(req,res)=>{addtofav(req,res,db)});
+app.post('/favourites',(req,res)=>{viewfavourites(req,res,db)});
+app.delete('/deletefav',(req,res)=>{deletefavourite(req,res,db)});
 
 
 app.listen(3000, () => {
